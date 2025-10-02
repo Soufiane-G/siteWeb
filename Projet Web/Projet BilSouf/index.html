@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cinéma Belge - Actualités et Articles</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+    <script src="index.js"></script>
+</head>
+<body>
+    <header class="main-header">
+      
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <a class="navbar-brand" href="index.html">Bilain Jaber</a>
+                <!-- Ajout couleur JS  -->
+                <div id="selecteur"> </div>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+
+                    <span class="navbar-toggler-icon"></span>
+
+                </button>
+                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="index.html">Accueil</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="article.html">Articles</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="custom.html">Personnalisation</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <!--ajout de la fenêtre de message d'information à cet endroit-là-->
+    <div id="position" class="position"> </div>
+
+
+    <main class="container">
+
+        <h1 class="main-title">Ces coins de Belgique dont le cinéma raffole</h1>
+
+        <section class="row">
+            <section class="col-md-8">
+                <article id ="over" class="card mb-4">
+                    <img src="https://playground.burotix.be/4IWPB/0_article_sample/39e98420b5e98bfbdc8a619bef7b8f61-1740665779.jpg" class="card-img-top" alt="Tournage de film en Belgique">
+                    <section class="card-body">
+                        <span class="badge bg-primary mb-2">Cinéma belge</span>
+                        
+                        <p class="card-text">De nombreux tournages se déroulent en Belgique. Petit tour des lieux les plus prisés par le septième art.</p>
+                        <footer class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">Par Adrien Corbeel • Il y a 4 heures</small>
+                            <a href="article.html"  class="btn btn-primary">Lire la suite</a>
+                        </footer>
+                    </section>
+                </article>
+
+                <section class="row">
+                    <article class="col-md-6 mb-4">
+                        <section class="card h-100">
+                            <img src="https://www.parismatch.com/lmnr/r/960,640,FFFFFF,forcex,center-middle/img/var/pm/public/styles/paysage/public/media/image/2024/04/23/17/gettyimages-1491762173.jpg" class="card-img-top" alt="Festival de Cannes">
+                            <section class="card-body">
+                                <span class="badge bg-success mb-2">Festivals</span>
+                                <h3 class="h5">Le Festival de Cannes 2024 dévoile sa sélection</h3>
+                                <p>Découvrez les films qui seront présentés lors de la prochaine édition du festival.</p>
+                                <footer class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted">Par Marie Laurent • Il y a 1 jour</small>
+                                    <a href="#" class="btn btn-outline-primary btn-sm">Lire</a>
+                                </footer>
+                            </section>
+                        </section>
+                    </article>
+
+                    <article class="col-md-6 mb-4">
+                        <section class="card h-100">
+                            <img src="https://sf2.cnetfrance.fr/wp-content/uploads/cnet/2024/11/netflix-catalogue-janvier-2025.jpg" class="card-img-top" alt="Netflix">
+                            <section class="card-body">
+                                <span class="badge bg-danger mb-2">Streaming</span>
+                                <h3 class="h5">Les nouveautés Netflix de mars 2024</h3>
+                                <p>Les films et séries qui arrivent sur la plateforme ce mois-ci.</p>
+                                <footer class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted">Par Sophie Martin • Il y a 2 jours</small>
+                                    <a href="#" class="btn btn-outline-primary btn-sm">Lire</a>
+                                </footer>
+                            </section>
+                        </section>
+                    </article>
+                </section>
+
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <article class="card h-100">
+                            <img src="https://www.lalibre.be/resizer/v2/NGKO6YDATVFCNHMABYNKNVBNO4.jpg?auth=e7dacb89cacdd90897d2fc9e922409192001eb8f99ee683adf5a0fbf86a60401&width=1200&height=800&quality=85&focal=2691%2C1794" class="card-img-top" alt="Cinéma français">
+                            <div class="card-body">
+                                <span class="badge bg-info mb-2">Cinéma français</span>
+                                <h3 class="card-title h5">Le cinéma français en pleine renaissance</h3>
+                                <p class="card-text">Une nouvelle génération de réalisateurs redonne vie au cinéma français.</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted">Par Thomas Dubois • Il y a 3 jours</small>
+                                    <a href="#" class="btn btn-outline-primary btn-sm">Lire</a>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <article class="card h-100">
+                            <img src="https://i0.wp.com/www.trendymood.com/wp-content/uploads/2017/05/Documentaires-Netflix.jpg?fit=1024%2C768&ssl=1" class="card-img-top" alt="Documentaire">
+                            <div class="card-body">
+                                <span class="badge bg-warning mb-2">Documentaire</span>
+                                <h3 class="card-title h5">Les documentaires qui font le buzz</h3>
+                                <p class="card-text">Une sélection des meilleurs documentaires du moment.</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted">Par Julie Bernard • Il y a 4 jours</small>
+                                    <a href="#" class="btn btn-outline-primary btn-sm">Lire</a>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <article class="card h-100">
+                            <img src="https://m.media-amazon.com/images/I/71ffJtgh4oL.jpg" class="card-img-top" alt="Cinéma belge">
+                            <div class="card-body">
+                                <span class="badge bg-success mb-2">Production</span>
+                                <h3 class="card-title h5">Les coulisses du cinéma belge</h3>
+                                <p class="card-text">Découvrez les secrets de fabrication des plus grands films belges de l'année.</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted">Par Michel Lambert • Il y a 1 semaine</small>
+                                    <a href="#" class="btn btn-outline-primary btn-sm">Lire</a>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <article class="card h-100">
+                            <img src="https://i.ytimg.com/vi/uGclmzQx2VM/sddefault.jpg" class="card-img-top" alt="Acteurs belges">
+                            <div class="card-body">
+                                <span class="badge bg-primary mb-2">Acteurs</span>
+                                <h3 class="card-title h5">Les acteurs belges à Hollywood</h3>
+                                <p class="card-text">Ces talents belges qui conquièrent le cinéma américain.</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted">Par Anne Dubois • Il y a 8 jours</small>
+                                    <a href="#" class="btn btn-outline-primary btn-sm">Lire</a>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </section>
+            <aside class="col-md-4">
+                <section class="card mb-4">
+                    <div class="card-body">
+                        <h4 class="h5 mb-3">À propos</h4>
+                        <p class="mb-0">Découvrez les dernières actualités et articles sur le cinéma belge et ses lieux de tournage.</p>
+                    </div>
+                </section>
+
+                <section class="card mb-4">
+                    <div class="card-body">
+                        <h4 class="h5 mb-3">Catégories</h4>
+                        <div class="list-group list-group-flush">
+                            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center border-0">
+                                Cinéma belge
+                                <span class="badge bg-primary rounded-pill">12</span>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center border-0">
+                                Festivals
+                                <span class="badge bg-primary rounded-pill">8</span>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center border-0">
+                                Streaming
+                                <span class="badge bg-primary rounded-pill">15</span>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center border-0">
+                                Documentaires
+                                <span class="badge bg-primary rounded-pill">6</span>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="card mb-4">
+                    <div class="card-body">
+                        <h4 class="h5 mb-3">Articles populaires</h4>
+                        <div class="list-group list-group-flush">
+                            <a href="#" class="list-group-item list-group-item-action border-0">
+                                <h6 class="mb-1">Les meilleurs films belges de 2024</h6>
+                                <p class="mb-1 small text-muted">Une sélection des films belges qui ont marqué l'année.</p>
+                                <small class="text-primary">3 jours</small>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action border-0">
+                                <h6 class="mb-1">Le cinéma belge à l'international</h6>
+                                <p class="mb-1 small text-muted">Comment le cinéma belge s'exporte à l'étranger.</p>
+                                <small class="text-primary">5 jours</small>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="card mb-4">
+                    <div class="card-body">
+                        <h4 class="h5 mb-3">Article en vedette</h4>
+                        <img src="https://ecran-total.fr/wp-content/uploads/2024/03/Copyright-Cinema-Palace.jpg" class="card-img-top mb-3" alt="Box-office">
+                        <span class="badge bg-danger mb-2">Box-office</span>
+                        <h3 class="h5">Le box-office belge en chiffres</h3>
+                        <p class="small text-muted">Analyse des performances des films belges dans les salles cette année.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">Par Pierre Leroy • Il y a 9 jours</small>
+                            <a href="#" class="btn btn-outline-primary btn-sm">Lire</a>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="card mb-4">
+                    <div class="card-body">
+                        <h4 class="h5 mb-3">Newsletter</h4>
+                        <p>Restez informé de l'actualité du cinéma belge.</p>
+                        <form>
+                            <input type="email" class="form-control mb-3" placeholder="Votre email">
+                            <button type="submit" class="btn btn-primary w-100">S'inscrire</button>
+                        </form>
+                    </div>
+                </section>
+
+                <section class="card mb-4">
+                    <div class="card-body">
+                        <h4 class="h5 mb-3">Dernières critiques</h4>
+                        <img src="https://fr.web.img6.acsta.net/pictures/22/10/26/16/00/5597821.jpg" class="card-img-top mb-3" alt="Critique de film">
+                        <span class="badge bg-info mb-2">Critique</span>
+                        <h3 class="h5">Close : Un chef-d'œuvre belge</h3>
+                        <p class="small text-muted">Une analyse approfondie du film qui a ému le monde entier.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">Par Marc Dumont • Il y a 2 jours</small>
+                            <a href="#" class="btn btn-outline-primary btn-sm">Lire</a>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="card mb-4">
+                    <div class="card-body">
+                        <h4 class="h5 mb-3">Interview</h4>
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6__bVGu55aiIMXZBjyt8n4sTl-bJDrOHegg&s" class="card-img-top mb-3" alt="Interview">
+                        <span class="badge bg-warning mb-2">Interview</span>
+                        <h3 class="h5">Rencontre avec Joachim Lafosse</h3>
+                        <p class="small text-muted">Le réalisateur belge nous parle de son prochain film.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">Par Claire Dubois • Il y a 6 jours</small>
+                            <a href="#" class="btn btn-outline-primary btn-sm">Lire</a>
+                        </div>
+                    </div>
+                </section>
+            </aside>
+        </section>
+    </main>
+
+    <footer class="bg-white shadow-sm mt-5">
+        <section class="container py-4">
+            <section class="row">
+                <section class="col-md-4 mb-3">
+                    <h5 class="text-primary mb-3">À propos</h5>
+                    <p class="text-muted mb-0">Découvrez les dernières actualités du cinéma belge.</p>
+                </section>
+                <nav class="col-md-4 mb-3">
+                    <h5 class="text-primary mb-3">Liens rapides</h5>
+                    <ul class="list-unstyled mb-0">
+                        <li><a href="index.html" class="text-muted text-decoration-none">Accueil</a></li>
+                        <li><a href="article.html" class="text-muted text-decoration-none">Articles</a></li>
+                        <li><a href="custom.html" class="text-muted text-decoration-none">Personnalisation</a></li>
+                    </ul>
+                </nav>
+                <section class="col-md-4">
+                    <h5 class="text-primary mb-3">Contact</h5>
+                    <p class="text-muted mb-0">Email: contact@monsite.be<br>Tél: +32 2 123 45 67</p>
+                </section>
+            </section>
+            <hr class="my-4">
+            <p class="text-center text-muted mb-0">&copy; 2024 Bilain Jaber. Tous droits réservés.</p>
+        </section>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> 
