@@ -1,0 +1,17 @@
+Consigne projet :
+
+color : red
+seriffont : Bodoni MT
+sansfont : Open Sans
+
+éléments du formulaire de customisation, menu latéral 1 :
+    - option de police du texte normal (normal, bold, italic)
+    - couleur des titres
+    - couleur du fond
+    - famille de police
+
+éléments du formulaire de customisation, menu latéral 2 :
+    - direction du texte
+    - épaisseur des bordures
+    - ombrage
+    - hauteur de ligne

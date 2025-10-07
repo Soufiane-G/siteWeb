@@ -1,0 +1,55 @@
+body{
+    font-family: Tahoma,Arial,sans-serif;
+    color: darkmagenta;
+
+}
+
+header
+{
+    attribut:valeur;
+    color:darkseagreen;
+    background-color: palegoldenrod;
+
+}
+span.highlight{
+    /*on a crée une classe Highlight où lorsque un le nom Turing serait découvert il ferait ce qui suit*/
+    color:magenta;
+}
+footer{
+    color: white;
+    background-color: black;
+}
+p{
+    font-family: "Times New Roman",serif;
+    color: darkolivegreen;
+    width:400px;
+    height: 150px; /*permet de modifier l'esapce entre les parapgraphes (ici on est dans la balise p)*/
+}
+
+figure {
+    border: darkolivegreen 4px solid;
+    padding: 4px;
+    margin: 4px;
+    width: 200px;
+}
+figure#img1{
+
+    width: 200px;
+}
+
+h3{
+    color: darkolivegreen;
+}
+h3.academic{
+    color: darkorange;
+}
+
+table#key_data h3{
+    color: darkorange;
+    margin: 0;
+}
+table#key_data,table#key_data td,table#key_data th {
+    border: 1px solid darkolivegreen;
+    border-collapse: collapse;
+
+    }
