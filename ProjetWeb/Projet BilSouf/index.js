@@ -1,6 +1,6 @@
 window.addEventListener("DOMContentLoaded", function (event) {
 
-    const selecteur= document.getElementById("selecteur");
+    const selecteur = document.getElementById("selecteur");
     if (selecteur) {
         selecteur.innerHTML = `<label for="color-select">Couleur : </label>
 
@@ -23,34 +23,60 @@ window.addEventListener("DOMContentLoaded", function (event) {
     }
     const color = document.getElementById("color-select")
     color.addEventListener("change", function (event) {
-        document.documentElement.style.setProperty( "--text-color",color.value)
+        document.documentElement.style.setProperty("--text-color", color.value)
     })
     const police = document.getElementById("police-select")
     police.addEventListener("change", function (event) {
-        document.documentElement.style.fontSize=police.value
+        document.documentElement.style.fontSize = police.value
+    })
+
+    const article = document.getElementById("article-main"); //Récupère l'élément de <article>.
+    const bouton = document.getElementById("masquer-article"); // récupère l'élement de <button>.
+    bouton.addEventListener("click", function () {
+
+        if (article.style.display !== "none") { // pour vérifier si l'article n'est pas vide donc "visible" ici
+            article.style.display = "none";       // On cache l'article
+            bouton.textContent = "Afficher l'article"; // Le bouton change et se nomme "Afficher l'article"
+        } else {
+            article.style.display = "block";            // si l'article est visible :
+            bouton.textContent = "Masquer l'article";  //le bouton devient masquer l'article
+        }
+
     })
 
 
-
     /*affichage des infos en haut a droite */
-    const card = document.getElementById('over');              // toute la carte
-    const article=document.querySelector(".card-text");
-    const position = document.getElementById("position");
-    const msg=" "
+    const card = document.querySelectorAll('.info-art');              // toute la carte
+    const position = document.getElementById("position");                  // position de l'information affo-ichée
+    const msg = " "
 
-    function over() {
-        position.innerHTML=article.innerText;
+    /*création d'un fonction afin de pouvoir la réutiliser plus tard
+    * récupération de tous le contenu des articles dont la class est .info-art ensuite on récupère
+    * le text-muted de larticle qui aura provoquer l'event
+    * on retourne les infos dans la position ou on laisse le cadre vide */
+    function over(event) {
+        const art = event.currentTarget.querySelector(".text-muted");
+        if(art) {
+            position.innerHTML = art.innerText;
+        }
+        else{
+            position.innerHTML = msg
+        }
     }
-    function  out(){
-        position.innerHTML=msg;
+
+    function out() {
+        position.innerHTML = msg;
     }
-    card.addEventListener("mouseover", over);
-    card.addEventListener("mouseout", out);
+
+    card.forEach(elem=> {
+    elem.addEventListener("mouseover", over);
+    elem.addEventListener("mouseout", out);
+})
 
 })
 
 
-
+/*commentaire test pour le commit*/
 
 
 
