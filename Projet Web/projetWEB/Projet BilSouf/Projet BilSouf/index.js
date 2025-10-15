@@ -83,12 +83,22 @@ window.addEventListener("DOMContentLoaded", function () {
     elem.addEventListener("mouseover", over);
     elem.addEventListener("mouseout", out);
 })
+        /* Formulaire --> Mot cléfs   */
+        const motForm   = document.getElementById('motInput');        // l’input de recherche
+        const titreForm = [...document.querySelectorAll('.titre-form')]; // Nodelist --> ... transforme en tableau pour la parcourir
+
+        function filtre() {
+         const q = motForm.value.toLowerCase(); //Prends la valeur de l'utilisateur et la rends insensible
+
+        titreForm.forEach(a => {
+         const titre = a.textContent.toLowerCase().trim(); // texte visible --> on le rend insensible et retire les espaces
+         // remonte au conteneur article pour cacher/montrer tout le bloc
+         const card = a.closest('article , .card') || a; //remonte pour trouver la valeur qui matche avec le selecteur
+         card.style.display = (q && !titre.includes(q)) ? 'none' : '';// “si l’utilisateur a tapé quelque chose ET que le titre ne contient pas ce texte
+         });
+        }
+        motForm.addEventListener('input', filtre);
+        filtre();
+
 
 })
-
-
-/*commentaire test pour le commit*/
-
-
-
-
