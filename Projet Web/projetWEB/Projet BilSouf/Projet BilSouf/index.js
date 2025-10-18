@@ -99,6 +99,28 @@ window.addEventListener("DOMContentLoaded", function () {
         }
         motForm.addEventListener('input', filtre);
         filtre();
+        
+        /* Gestion statistique nombre d'article */
+        const compteur = document.querySelector('.art-visible');
+        const input = document.querySelector('#motInput');
+        const articles = [...document.querySelectorAll('.info-art')];
 
+        function majCompteur() {
+        const q = input.value.trim().toLowerCase(); // récupère le texte saisi en supprimant les espaces et --> miniscules
+        let visibles = 0;
+
+         articles.forEach(a => {
+            const match = a.textContent.toLowerCase().includes(q); //récupère le texte contenue dans l'article et test le mot tapé (q)
+            if (match) visibles++;                                 // si sa match on rajoute 1 à la variable
+        });
+       
+        compteur.textContent = "Nombre d'articles visibles : " + visibles;
+        }
+        input.addEventListener('input', majCompteur);
+        majCompteur();
+        
+
+         
+        
 
 })
