@@ -45,7 +45,7 @@ window.addEventListener("DOMContentLoaded", function () {
     const bouton = document.getElementById("masquer-article"); // récupère l'élement de <button>.
     bouton.addEventListener("click", function () {
 
-        if (article.style.display !== "none") { // pour vérifier si l'article n'est pas vide donc "visible" ici
+        if (article.style.display !== "none") { // pour vérifier si l'article n'est pas à l'état caché
             article.style.display = "none";       // On cache l'article
             bouton.textContent = "Afficher l'article"; // Le bouton change et se nomme "Afficher l'article."
         } else {
@@ -74,6 +74,42 @@ window.addEventListener("DOMContentLoaded", function () {
             position.innerHTML = msg
         }
     }
+
+    const articleSecondaire= document.querySelectorAll('.article-secondaire');
+    const affichePlus = document.getElementById("montrer-plus");
+    const afficheMoins = document.getElementById("montrer-moins");
+
+    let afficherArticle=2
+    function AfficherArticles(){
+        for (let i = 0; i < afficherArticle && i <articleSecondaire.length ; i++){
+            articleSecondaire[i].style.display = "block";
+        }
+    }
+    //Afficher plus;
+    affichePlus.addEventListener("click", function(){
+        if(afficherArticle<=articleSecondaire.length ) {
+            AfficherArticles();
+            afficherArticle += 2;
+        }
+    })
+    function MasquerArticles(){
+
+        afficherArticle -= 2;
+        if (afficherArticle < 0) afficherArticle = 0;
+
+        for (let j = afficherArticle; j < articleSecondaire.length; j++) {
+            articleSecondaire[j].style.display = "none";
+        }
+    }
+    //afficher Moins
+    afficheMoins.addEventListener("click", function(){
+        if(afficherArticle > 0) {//on s'assure de ne pas essayer de masquer quand il n'y a déjà plus d'article à masquer
+        MasquerArticles();
+
+        }
+    })
+
+
 
     function out() {
         position.innerHTML = msg;
@@ -120,7 +156,8 @@ window.addEventListener("DOMContentLoaded", function () {
         majCompteur();
         
 
-         
+
+
         
 
 })
