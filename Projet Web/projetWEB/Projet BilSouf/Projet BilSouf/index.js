@@ -1,7 +1,7 @@
 window.addEventListener("DOMContentLoaded", function () {
 
     /*Bonus de sauvegarde de la couleur*/
-    const savedColor = localStorage.getItem("text-color");
+    const savedColor =localStorage.getItem("text-color");
     const savedFont=localStorage.getItem("fontSize");
     if (savedColor ) {
         document.documentElement.style.setProperty("--text-color", savedColor);
@@ -75,39 +75,52 @@ window.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    const articleSecondaire= document.querySelectorAll('.article-secondaire');
+
+    const articleSecondaire = document.querySelectorAll('.article-secondaire');
     const affichePlus = document.getElementById("montrer-plus");
     const afficheMoins = document.getElementById("montrer-moins");
 
-    let afficherArticle=2
-    function AfficherArticles(){
-        for (let i = 0; i < afficherArticle && i <articleSecondaire.length ; i++){
-            articleSecondaire[i].style.display = "block";
+    let afficherArticle = 0;
+
+// Fonction pour afficher les articles
+    function AfficherArticles() {
+        for (let i = 0; i < articleSecondaire.length; i++) {
+            // Affiche seulement les N premiers articles selon afficherArticle
+            if (i < afficherArticle) {
+                articleSecondaire[i].style.display = "block";
+            } else {
+                articleSecondaire[i].style.display = "none";
+            }
         }
     }
-    //Afficher plus;
-    affichePlus.addEventListener("click", function(){
-        if(afficherArticle<=articleSecondaire.length ) {
+
+// Au clic sur "Afficher plus"
+    affichePlus.addEventListener("click", function () {
+        if (afficherArticle < articleSecondaire.length) {
+            afficherArticle += 2; // Incrémente d'abord
+            if (afficherArticle > articleSecondaire.length) {
+                afficherArticle = articleSecondaire.length;
+            }
             AfficherArticles();
-            afficherArticle += 2;
+            console.log("Afficher plus -> ", afficherArticle);
         }
-    })
-    function MasquerArticles(){
+    });
 
-        afficherArticle -= 2;
-        if (afficherArticle < 0) afficherArticle = 0;
-
-        for (let j = afficherArticle; j < articleSecondaire.length; j++) {
-            articleSecondaire[j].style.display = "none";
+// Au clic sur "Afficher moins"
+    afficheMoins.addEventListener("click", function () {
+        if (afficherArticle > 0) {
+            afficherArticle -= 2;
+            if (afficherArticle < 0) {
+                afficherArticle = 0;
+            }
+            AfficherArticles();
+            console.log("Afficher moins -> ", afficherArticle);
         }
-    }
-    //afficher Moins
-    afficheMoins.addEventListener("click", function(){
-        if(afficherArticle > 0) {//on s'assure de ne pas essayer de masquer quand il n'y a déjà plus d'article à masquer
-        MasquerArticles();
+    });
 
-        }
-    })
+// Initialisation
+    AfficherArticles();
+
 
 
 
