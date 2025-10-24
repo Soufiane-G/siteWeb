@@ -28,7 +28,7 @@ window.addEventListener("DOMContentLoaded", function () {
     const color = document.getElementById("color-select")
     if(color) {
         color.addEventListener("change", function () {
-            document.documentElement.style.setProperty("--text-color", color.value);
+            document.documentElement.style.setProperty("--text-color", color.value); 
             localStorage.setItem("text-color", color.value)
         })
     }
@@ -75,15 +75,14 @@ window.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+         const articleSecondaire = document.querySelectorAll('.article-secondaire');
+         const affichePlus = document.getElementById("montrer-plus");
+         const afficheMoins = document.getElementById("montrer-moins");
 
-    const articleSecondaire = document.querySelectorAll('.article-secondaire');
-    const affichePlus = document.getElementById("montrer-plus");
-    const afficheMoins = document.getElementById("montrer-moins");
+         let afficherArticle = 0;
 
-    let afficherArticle = 0;
-
-// Fonction pour afficher les articles
-    function AfficherArticles() {
+    // Fonction pour afficher les articles
+        function AfficherArticles() {
         for (let i = 0; i < articleSecondaire.length; i++) {
             // Affiche seulement les N premiers articles selon afficherArticle
             if (i < afficherArticle) {
@@ -94,9 +93,9 @@ window.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-// Au clic sur "Afficher plus"
-    affichePlus.addEventListener("click", function () {
-        if (afficherArticle < articleSecondaire.length) {
+    // Au clic sur "Afficher plus"
+        affichePlus.addEventListener("click", function () {
+         if (afficherArticle < articleSecondaire.length) {
             afficherArticle += 2; // Incrémente d'abord
             if (afficherArticle > articleSecondaire.length) {
                 afficherArticle = articleSecondaire.length;
@@ -106,8 +105,8 @@ window.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-// Au clic sur "Afficher moins"
-    afficheMoins.addEventListener("click", function () {
+    // Au clic sur "Afficher moins"
+        afficheMoins.addEventListener("click", function () {
         if (afficherArticle > 0) {
             afficherArticle -= 2;
             if (afficherArticle < 0) {
@@ -118,12 +117,10 @@ window.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-// Initialisation
-    AfficherArticles();
+    // Initialisation
+    AfficherArticles(); 
 
-
-
-
+  
     function out() {
         position.innerHTML = msg;
     }
@@ -132,6 +129,7 @@ window.addEventListener("DOMContentLoaded", function () {
     elem.addEventListener("mouseover", over);
     elem.addEventListener("mouseout", out);
 })
+
         /* Formulaire --> Mot cléfs   */
         const motForm   = document.getElementById('motInput');        // l’input de recherche
         const titreForm = [...document.querySelectorAll('.titre-form')]; // Nodelist --> ... transforme en tableau pour la parcourir
@@ -148,29 +146,121 @@ window.addEventListener("DOMContentLoaded", function () {
         }
         motForm.addEventListener('input', filtre);
         filtre();
+
         
-        /* Gestion statistique nombre d'article */
-        const compteur = document.querySelector('.art-visible');
-        const input = document.querySelector('#motInput');
-        const articles = [...document.querySelectorAll('.info-art')];
-
-        function majCompteur() {
-        const q = input.value.trim().toLowerCase(); // récupère le texte saisi en supprimant les espaces et --> miniscules
-        let visibles = 0;
-
-         articles.forEach(a => {
-            const match = a.textContent.toLowerCase().includes(q); //récupère le texte contenue dans l'article et test le mot tapé (q)
-            if (match) visibles++;                                 // si sa match on rajoute 1 à la variable
-        });
        
-        compteur.textContent = "Nombre d'articles visibles : " + visibles;
+    /*FORMULAIRE DE RECHERCHE COMPLET + COMPTEUR */
+   
+    const motFormul = document.getElementById('motInput');
+    const dureeMin = document.getElementById("dureeMin");  
+    const dureeMax = document.getElementById("dureeMax"); 
+    const dureeMinValue = document.getElementById("dureeMinValue");
+    const dureeMaxValue = document.getElementById("dureeMaxValue");
+    const nombreArticlesInput = document.getElementById("nombreArticles");
+    const articlesFiltrables = document.querySelectorAll(".info-art");
+    const compteur = document.querySelector('.art-visible'); // Le compteur dans le header
+
+    // Fonction UNIQUE qui applique TOUS les filtres + met à jour le compteur
+    function appliquerFiltres() {
+        // Récupère les valeurs des filtres
+        const motCle = motFormul ? motFormul.value.toLowerCase().trim() : ''; //vérifie si l'input est pas null/vide --> si oui retourne chaîne vide
+        const minVal = dureeMin ? parseInt(dureeMin.value) : 0;
+        const maxVal = dureeMax ? parseInt(dureeMax.value) : 60;
+        const maxArticles = nombreArticlesInput ? parseInt(nombreArticlesInput.value) : 100; //nombre d'article à afficher par défaut 100.
+        
+        let compteurAffiches = 0; // Compte les articles réellement affichés
+
+        articlesFiltrables.forEach(article => {
+            let correspondCriteres = true;
+
+            // FILTRE 1 : Mot-clé dans le titre
+            if (motCle) {
+                const titre = article.querySelector('.titre-form');                                //titres des articles
+                if (titre) {
+                    const titreText = titre.textContent.toLowerCase().trim();                       //récupère le texte visible
+                    if (!titreText.includes(motCle)) {                                             //Si le titre ne contient pas de mot cléfs
+                        correspondCriteres = false;                                                //On le met à false
+                    }
+                }
+            }
+
+            // FILTRE 2 : Temps de lecture (readtime min/max)
+            const readtimeElement = article.querySelector(".readtime");
+            if (readtimeElement) {
+                const texte = readtimeElement.textContent;
+                const match = texte.match(/(\d+)\s*min/);                    //.match --> tester une expression régulière (regex)
+                if (match) {
+                    const tempsLecture = parseInt(match[1]);                 //
+                    if (tempsLecture < minVal || tempsLecture > maxVal) {       // si le temps de lecture différent de la plage alors false.
+                        correspondCriteres = false;
+                    }
+                }
+            }
+
+            // FILTRE 3 : Nombre maximum d'articles
+            // Si l'article correspond aux critères ET qu'on n'a pas atteint le max
+            
+            if (correspondCriteres && compteurAffiches < maxArticles) {     //Si l'article correspond aux critères ET qu'on n'a pas atteint le max
+                article.style.display = "";                                   //réinitialise la propriété display -> affiche l'article
+                compteurAffiches++;                                             // Incrémente le compteur
+            } else {
+                article.style.display = "none";                                //cache l'article
+            }
+        });
+
+        // Met à jour le compteur dans le header
+        if (compteur) {
+            compteur.textContent = "Nombre d'articles visibles : " + compteurAffiches;   
         }
-        input.addEventListener('input', majCompteur);
-        majCompteur();
+    }
+
+    // Fonction pour gérer les sliders de durée
+    function updateSliders() {
+        let minVal = parseInt(dureeMin.value);
+        let maxVal = parseInt(dureeMax.value);
+
+        // Empêche le que le minimum dépasse le max
+        if (minVal > maxVal) {
+            minVal = maxVal;
+            dureeMin.value = minVal;
+        }
+        if (maxVal < minVal) {
+            maxVal = minVal;
+            dureeMax.value = maxVal;
+        }
+
+        // Met à jour l'affichage des valeurs
+        if (dureeMinValue) dureeMinValue.textContent = minVal;
+        if (dureeMaxValue) dureeMaxValue.textContent = maxVal;
+
+        // Applique tous les filtres
+        appliquerFiltres();
+    }
+
+    // Event listeners
+    if (motFormul) {
+        motFormul.addEventListener('input', appliquerFiltres);   // on appele la fonction quand l'utilisateur entre qlq chose
+    }
+
+    if (dureeMin) {
+        dureeMin.addEventListener("input", updateSliders);
+    }
+
+    if (dureeMax) {
+        dureeMax.addEventListener("input", updateSliders);
+    }
+
+    // Event listener pour le nombre d'articles
+    if (nombreArticlesInput) {                                       //Qd le nombre d'article change on réinitialise avec la fonction
+        nombreArticlesInput.addEventListener('input', appliquerFiltres);
+    }
+
+    // Initialisation au chargement
+    if (dureeMin && dureeMax) {
+        updateSliders();
+    } else {
+        appliquerFiltres();
+    }
+
         
-
-
-
-        
-
 })
