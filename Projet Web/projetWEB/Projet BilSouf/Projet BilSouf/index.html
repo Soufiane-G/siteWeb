@@ -5,766 +5,315 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cinéma Belge - Actualités et Articles</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        /* Votre CSS de main.css est intégré ici */
-        :root {
-            --template-color: yellow;
-            --primary-color: #0066ff;
-            --text-color: #333;
-            --bg-color: #ffffff;
-            --border-color: #ddd;
-            --hover-color: #4a90e2;
-            --card-bg: #ffffff;
-            --serif-font: "Times New Roman";
-            --sans-font: "Consolas";
-            --font-size: 16px;
-            --border-radius: 4px;
-            --box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .article-secondaire { display: none; }
-
-        .main-header {
-            background-color: var(--template-color);
-            padding: 1rem 0;
-            box-shadow: var(--box-shadow);
-            margin-bottom: 2rem;
-        }
-
-        .main-header .navbar {
-            background-color: transparent !important;
-            box-shadow: none;
-        }
-
-        .main-header .navbar-brand {
-            color: var(--primary-color) !important;
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
-
-        .main-header .nav-link {
-            color: var(--text-color) !important;
-            font-weight: 500;
-            padding: 0.5rem 1rem;
-            transition: color 0.3s ease;
-        }
-
-        .main-header .nav-link:hover {
-            color: var(--primary-color) !important;
-        }
-
-        .main-title {
-            font-size: 2.5rem;
-            font-weight: 600;
-            color: var(--text-color);
-            margin: 2rem 0 1.5rem;
-            line-height: 1.2;
-            padding-bottom: 0.5rem;
-            border-bottom: 3px solid var(--template-color);
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 0;
-        }
-
-        .card {
-            background-color: var(--card-bg);
-            border: none;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-            transition: transform 0.2s;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-        }
-
-        .card-header {
-            background-color: var(--card-bg);
-            border-bottom: 1px solid rgba(0,0,0,0.1);
-            padding: 1.25rem;
-            border-radius: 12px 12px 0 0;
-        }
-
-        .card-title { font-size: 1rem !important; font-weight: 600; }
-        .card-text { font-size: 0.8rem !important; }
-        .card-body small, .card-body a.btn { font-size: 0.7rem !important; }
-
-        .badge {
-            padding: 0.5em 1em;
-            font-weight: 500;
-            font-size: 0.6rem !important;
-        }
-
-        .btn-primary {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
-        }
-
-        .btn-outline-primary {
-            border-width: 2px;
-        }
-
-        .btn-outline-primary:hover {
-            background-color: var(--template-color);
-            border-color: var(--template-color);
-            color: #000;
-        }
-
-        #position {
-            position: fixed;
-            right: 20px;
-            top: 100px;
-            width: 250px;
-            border: 1px solid gray;
-            padding: 10px;
-            background: #fff;
-            z-index: 1050;
-            min-height: 50px;
-        }
-
-        #masquer-article {
-            margin: 10px;
-        }
-
-        .art-visible {
-            position: absolute;
-            margin-top: 80px;
-            margin-left: 140px;
-        }
-
-        input[type="range"] {
-            -webkit-appearance: none;
-            width: 100%;
-            height: 4px;
-            background: #e0e0e0;
-            border-radius: 2px;
-            margin: 10px 0;
-        }
-
-        input[type="range"]::-webkit-slider-thumb,
-        input[type="range"]::-moz-range-thumb {
-            -webkit-appearance: none;
-            width: 16px;
-            height: 16px;
-            background: var(--primary-color);
-            border-radius: 50%;
-            cursor: pointer;
-            border: none;
-        }
-
-        /* Animation pour les articles qui apparaissent/disparaissent */
-        .fade-enter-active, .fade-leave-active {
-            transition: opacity 0.3s;
-        }
-        .fade-enter, .fade-leave-to {
-            opacity: 0;
-        }
-    </style>
+    <link href="css/main.css" rel="stylesheet">
+    <script src="index.js"></script>
 </head>
 <body>
-    <!-- 
-    ============================================================
-    EXPLICATION GLOBALE DE LA STRUCTURE VUE.JS
-    ============================================================
-    
-    1. Tout le contenu est dans <div id="app">
-    2. Vue va "monter" (mount) l'application sur cet élément
-    3. On utilise des directives Vue (v-model, v-show, @click, etc.)
-    4. Le script Vue se trouve tout en bas avec createApp()
-    -->
-    <div id="app">
-        <header class="main-header">
-            <nav class="navbar navbar-expand-lg">
-                <div class="container">
-                    <a class="navbar-brand" href="index.html">Bilain Jaber</a>
-                    
-                    <!-- 
-                    ==================== SÉLECTEUR COULEUR/TAILLE ====================
-                    POURQUOI v-model ici ?
-                    - Crée un lien bidirectionnel entre le select et la variable
-                    - Quand l'utilisateur change la valeur, couleurSelectionnee est mise à jour
-                    - Pas besoin de addEventListener
-                    -->
-                    <div id="selecteur">
-                        <label for="color-select">Couleur : </label>
-                        <select id="color-select" v-model="couleurSelectionnee" @change="changerCouleur">
-                            <option value="#000000">NOIR</option>
-                            <option value="#0000FF">BLEU</option>
-                            <option value="#FF0000">ROUGE</option>
-                        </select>
-                        
-                        <label for="police-select">Taille : </label>
-                        <select id="police-select" v-model="tailleSelectionnee" @change="changerTaille">
-                            <option value="10px">PETIT</option>
-                            <option value="16px">MOYEN</option>
-                            <option value="24px">GRAND</option>
-                        </select>
-                    </div>
-                    
-                    <!-- 
-                    ==================== COMPTEUR D'ARTICLES ====================
-                    POURQUOI {{ articlesVisiblesCount }} ?
-                    - {{ }} = interpolation Vue : affiche la valeur d'une variable
-                    - articlesVisiblesCount est une computed property qui se met à jour automatiquement
-                    -->
-                    <p class="art-visible">Nombre d'articles visibles : {{ articlesVisiblesCount }}</p>
-                    
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                        <ul class="navbar-nav">
-                            <li class="nav-item">
-                                <a class="nav-link active" href="index.html">Accueil</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="article.html">Articles</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="custom.html">Personnalisation</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-        </header>
+<header class="main-header">
 
-        <!-- 
-        ==================== ZONE INFO SURVOL ====================
-        POURQUOI v-show au lieu de manipuler innerHTML ?
-        - v-show cache/affiche l'élément avec display: none
-        - Plus simple et automatique
-        -->
-        <div id="position" v-show="infoSurvol">
-            {{ infoSurvol }}
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">Bilain Jaber</a>
+
+            <!-- Ajout couleur JS  -->
+            <div id="selecteur"> </div>
+            <!--Nb article visible -->
+            <p class="art-visible"> </p>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+
+                <span class="navbar-toggler-icon"></span>
+
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="article.html">Articles</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="custom.html">Personnalisation</a>
+                    </li>
+                </ul>
+            </div>
         </div>
+    </nav>
+</header>
+<!--ajout de la fenêtre de message d'information à cet endroit-là-->
 
-        <main class="container">
-            <h1 class="main-title">Ces coins de Belgique dont le cinéma raffole</h1>
+<div id="position" class="position"> </div>
 
+
+
+<main class="container">
+
+    <h1 class="main-title">Ces coins de Belgique dont le cinéma raffole</h1>
+
+    <section class="row">
+        <section class="col-md-8">
+            <!-- afficher/masquez article-->
+
+            <button id="masquer-article">Masquer l'article </button>
+
+            <article id ="article-main" class="card info-art mb-4">
+                <img src="https://playground.burotix.be/4IWPB/0_article_sample/39e98420b5e98bfbdc8a619bef7b8f61-1740665779.jpg" class="card-img-top" alt="Tournage de film en Belgique">
+
+                <section class="card-body">
+                    <span class="badge bg-primary mb-2">Cinéma belge</span>
+                    <h4 class="h5 titre-form">Ces coins de Belgique dont le cinéma raffole</h4>
+                    <p class="card-text">De nombreux tournages se déroulent en Belgique. Petit tour des lieux les plus prisés par le septième art.</p>
+                    <footer class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">Par Adrien Corbeel • <br>05/10/2025 <br><p class="readtime"> Temps de lecture : 50 min</p> </small>
+                        <a href="article.html"  class="btn btn-primary">Lire la suite</a>
+                    </footer>
+                </section>
+
+            </article>
+            <button id="montrer-plus">Montrer Plus </button>
+            <button id="montrer-moins">Montrer Moins </button>
             <section class="row">
-                <section class="col-md-8">
-                    <!-- 
-                    ==================== BOUTON MASQUER/AFFICHER ====================
-                    POURQUOI @click="toggleArticle" ?
-                    - @ est un raccourci pour v-on: (écouter un événement)
-                    - toggleArticle est une méthode définie plus bas
-                    - Plus propre que addEventListener
-                    -->
-                    <button id="masquer-article" @click="toggleArticle">
-                        {{ articleVisible ? "Masquer l'article" : "Afficher l'article" }}
-                    </button>
-
-                    <!-- 
-                    ==================== ARTICLE PRINCIPAL ====================
-                    POURQUOI v-show="articleVisible" ?
-                    - Affiche/cache l'article selon la valeur de articleVisible
-                    - Pas besoin de manipuler style.display manuellement
-                    
-                    POURQUOI @mouseover et @mouseout ?
-                    - Remplace addEventListener('mouseover')
-                    - afficherInfoArticle() est appelé au survol
-                    -->
-                    <article 
-                        id="article-main" 
-                        class="card info-art mb-4"
-                        v-show="articleVisible"
-                        @mouseover="afficherInfoArticle(articlePrincipal)"
-                        @mouseout="cacherInfo"
-                    >
-                        <img :src="articlePrincipal.image" class="card-img-top" alt="Tournage de film en Belgique">
+                <article class="info-art article-secondaire col-md-6 mb-4 ">
+                    <section class="card h-100">
+                        <img src="https://www.parismatch.com/lmnr/r/960,640,FFFFFF,forcex,center-middle/img/var/pm/public/styles/paysage/public/media/image/2024/04/23/17/gettyimages-1491762173.jpg" class="card-img-top" alt="Festival de Cannes">
                         <section class="card-body">
-                            <span class="badge bg-primary mb-2">{{ articlePrincipal.categorie }}</span>
-                            <h4 class="h5 titre-form">{{ articlePrincipal.titre }}</h4>
-                            <p class="card-text">{{ articlePrincipal.description }}</p>
+                            <span class="badge bg-success mb-2">Festivals</span>
+                            <h3 class="h5 titre-form">Le Festival de Cannes 2024 dévoile sa sélection</h3>
+                            <p>Découvrez les films qui seront présentés lors de la prochaine édition du festival.</p>
                             <footer class="d-flex justify-content-between align-items-center">
-                                <small class="text-muted">
-                                    Par {{ articlePrincipal.auteur }} •<br>
-                                    {{ articlePrincipal.date }}<br>
-                                    <p class="readtime">Temps de lecture : {{ articlePrincipal.temps }} min</p>
-                                </small>
-                                <a href="article.html" class="btn btn-primary">Lire la suite</a>
+                                <small class="text-muted">Par Marie Laurent • <br>28/09/2025 <br><p class="readtime"> Temps de lecture : 25 min </p></small>
+                                <a href="#" class="btn btn-outline-primary btn-sm">Lire</a>
                             </footer>
                         </section>
+                    </section>
+                </article>
+
+                <article class="col-md-6 mb-4 info-art article-secondaire">
+                    <section class="card h-100">
+                        <img src="https://sf2.cnetfrance.fr/wp-content/uploads/cnet/2024/11/netflix-catalogue-janvier-2025.jpg" class="card-img-top" alt="Netflix">
+                        <section class="card-body">
+                            <span class="badge bg-danger mb-2">Streaming</span>
+                            <h3 class="h5 titre-form">Les nouveautés Netflix de mars 2024</h3>
+                            <p>Les films et séries qui arrivent sur la plateforme ce mois-ci.</p>
+                            <footer class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">Par Sophie Martin • <br>03/10/2025 <br><p class="readtime"> Temps de lecture : 30 min </p></small>
+                                <a href="#" class="btn btn-outline-primary btn-sm">Lire</a>
+                            </footer>
+                        </section>
+                    </section>
+                </article>
+            </section>
+
+            <div class="row">
+                <div class="col-md-6 mb-4 ">
+                    <article class="card article-secondaire h-100 info-art">
+                        <img src="https://www.lalibre.be/resizer/v2/NGKO6YDATVFCNHMABYNKNVBNO4.jpg?auth=e7dacb89cacdd90897d2fc9e922409192001eb8f99ee683adf5a0fbf86a60401&width=1200&height=800&quality=85&focal=2691%2C1794" class="card-img-top" alt="Cinéma français">
+                        <div class="card-body">
+                            <span class="badge bg-info mb-2">Cinéma français</span>
+                            <h3 class="card-title h5 titre-form">Le cinéma français en pleine renaissance</h3>
+                            <p class="card-text">Une nouvelle génération de réalisateurs redonne vie au cinéma français.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">Par Thomas Dubois • <br>02/10/2025 <br><p class="readtime"> Temps de lecture : 20 min </p></small>
+                                <a href="#" class="btn btn-outline-primary btn-sm">Lire</a>
+                            </div>
+                        </div>
                     </article>
-
-                    <!-- 
-                    ==================== BOUTONS AFFICHER PLUS/MOINS ====================
-                    POURQUOI :disabled ?
-                    - : est un raccourci pour v-bind (lier une propriété)
-                    - Désactive automatiquement le bouton selon une condition
-                    - afficherArticle >= articlesFiltres.length = on a tout affiché
-                    -->
-                    <button 
-                        id="montrer-plus" 
-                        @click="afficherPlus"
-                        :disabled="afficherArticle >= articlesFiltres.length"
-                    >
-                        Montrer Plus
-                    </button>
-                    <button 
-                        id="montrer-moins" 
-                        @click="afficherMoins"
-                        :disabled="afficherArticle === 0"
-                    >
-                        Montrer Moins
-                    </button>
-
-                    <!-- 
-                    ==================== ARTICLES SECONDAIRES ====================
-                    POURQUOI v-for ?
-                    - Boucle sur un tableau (comme forEach mais dans le template)
-                    - Crée automatiquement un élément pour chaque article
-                    - (article, index) : article = l'objet, index = position dans le tableau
-                    
-                    POURQUOI :key="article.id" ?
-                    - Vue a besoin d'un identifiant unique pour optimiser le rendu
-                    - Permet à Vue de savoir quel article a changé
-                    
-                    POURQUOI v-show="index < afficherArticle" ?
-                    - Affiche seulement les N premiers articles
-                    - Remplace votre boucle for avec style.display
-                    -->
-                    <section class="row">
-                        <article 
-                            v-for="(article, index) in articlesFiltres"
-                            :key="article.id"
-                            class="col-md-6 mb-4 info-art"
-                            v-show="index < afficherArticle"
-                            @mouseover="afficherInfoArticle(article)"
-                            @mouseout="cacherInfo"
-                        >
-                            <section class="card h-100">
-                                <img :src="article.image" class="card-img-top" :alt="article.titre">
-                                <section class="card-body">
-                                    <span :class="'badge bg-' + article.badgeColor + ' mb-2'">{{ article.categorie }}</span>
-                                    <h3 class="h5 titre-form">{{ article.titre }}</h3>
-                                    <p>{{ article.description }}</p>
-                                    <footer class="d-flex justify-content-between align-items-center">
-                                        <small class="text-muted">
-                                            Par {{ article.auteur }} •<br>
-                                            {{ article.date }}<br>
-                                            <p class="readtime">Temps de lecture : {{ article.temps }} min</p>
-                                        </small>
-                                        <a href="#" class="btn btn-outline-primary btn-sm">Lire</a>
-                                    </footer>
-                                </section>
-                            </section>
-                        </article>
-                    </section>
-                </section>
-
-                <!-- 
-                ==================== SIDEBAR AVEC FILTRES ====================
-                -->
-                <aside class="col-md-4">
-                    <div class="card-body card mb-4">
-                        <p><b>Recherche formulaire :</b></p>
-                        <form class="form-control">
-                            <!-- 
-                            POURQUOI v-model="motCle" ?
-                            - Lie l'input à la variable motCle
-                            - Dès que l'utilisateur tape, motCle est mis à jour
-                            - articlesFiltres (computed) se recalcule automatiquement
-                            -->
-                            <label class="col-19 col-md-5">Mot clés :</label>
-                            <input 
-                                id="motInput" 
-                                class="col-12 col-md-5"
-                                v-model="motCle"
-                                placeholder="Rechercher..."
-                            >
-                            
-                            <!-- 
-                            POURQUOI v-model.number ?
-                            - .number est un modificateur qui convertit en nombre
-                            - Sans ça, dureeMin serait une string "15" au lieu de 15
-                            -->
-                            <div class="mb-3">
-                                <label class="col-19 col-md-5">Durée Min : <span>{{ dureeMin }}</span> min</label>
-                                <input 
-                                    type="range" 
-                                    id="dureeMin" 
-                                    class="col-12 col-md-5" 
-                                    min="0" 
-                                    max="60" 
-                                    v-model.number="dureeMin"
-                                >
+                </div>
+                <div class="col-md-6 mb-4">
+                    <article class="card article-secondaire h-100 info-art">
+                        <img src="https://i0.wp.com/www.trendymood.com/wp-content/uploads/2017/05/Documentaires-Netflix.jpg?fit=1024%2C768&ssl=1" class="card-img-top" alt="Documentaire">
+                        <div class="card-body">
+                            <span class="badge bg-warning mb-2">Documentaire</span>
+                            <h3 class="card-title h5 titre-form">Les documentaires qui font le buzz</h3>
+                            <p class="card-text">Une sélection des meilleurs documentaires du moment.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">Par Julie Bernard • <br>01/10/2025 <br><p class="readtime"> Temps de lecture : 10 min</p></small>
+                                <a href="#" class="btn btn-outline-primary btn-sm">Lire</a>
                             </div>
-                            
-                            <div class="mb-3">
-                                <label class="col-19 col-md-5">Durée Max : <span>{{ dureeMax }}</span> min</label>
-                                <input 
-                                    type="range" 
-                                    id="dureeMax" 
-                                    class="col-12 col-md-5" 
-                                    min="0" 
-                                    max="60"
-                                    v-model.number="dureeMax"
-                                >
+                        </div>
+                    </article>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <article class="card article-secondaire h-100 info-art">
+                        <img src="https://m.media-amazon.com/images/I/71ffJtgh4oL.jpg" class="card-img-top" alt="Cinéma belge">
+                        <div class="card-body">
+                            <span class="badge bg-success mb-2">Production</span>
+                            <h3 class="card-title h5 titre-form">Les coulisses du cinéma belge</h3>
+                            <p class="card-text">Découvrez les secrets de fabrication des plus grands films belges de l'année.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">Par Michel Lambert • <br>25/09/2025 <br><p class="readtime">Temps de lecture : 38 min</p></small>
+                                <a href="#" class="btn btn-outline-primary btn-sm">Lire</a>
                             </div>
-                            
-                            <label class="col-19 col-md-5">Nombre max d'articles :</label>
-                            <input 
-                                type="number" 
-                                id="nombreArticles" 
-                                class="col-12 col-md-5" 
-                                min="1" 
-                                max="20"
-                                v-model.number="maxArticles"
-                            >
-                        </form>
+                        </div>
+                    </article>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <article class="card article-secondaire h-100 info-art">
+                        <img src="https://i.ytimg.com/vi/uGclmzQx2VM/sddefault.jpg" class="card-img-top" alt="Acteurs belges">
+                        <div class="card-body">
+                            <span class="badge bg-primary mb-2">Acteurs</span>
+                            <h3 class="card-title h5 titre-form">Les acteurs belges à Hollywood</h3>
+                            <p class="card-text">Ces talents belges qui conquièrent le cinéma américain.</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">Par Anne Dubois •  <br>22/09/2025 <br> <p class="readtime">Temps de lecture : 23 min<p></small>
+                                <a href="#" class="btn btn-outline-primary btn-sm">Lire</a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+        <aside class="col-md-4">
+            <!-- Ajout formulaire de recherche  -->
+            <div class="card-body card mb-4">
+                <p> <b>Recherche formulaire : </b></p>
+                <form action="" method="get" class="form-control">
+                    <label  class="col-19 col-md-5">Mot clés :    </label> <input id="motInput" class="col-12 col-md-5">
+                    <div class="mb-3">
+                        <label class="col-19 col-md-5">Durée Min : <span id="dureeMinValue">0</span> min</label>
+                        <input type="range" id="dureeMin" class="col-12 col-md-5" min="0" max="60" value="0" step="1">
                     </div>
-
-                    <!-- Reste de la sidebar (statique, pas de changement) -->
-                    <section class="card mb-4">
-                        <div class="card-body">
-                            <h4 class="h5 mb-3">À propos</h4>
-                            <p class="mb-0">Découvrez les dernières actualités et articles sur le cinéma belge.</p>
-                        </div>
-                    </section>
-
-                    <section class="card mb-4">
-                        <div class="card-body">
-                            <h4 class="h5 mb-3">Catégories</h4>
-                            <div class="list-group list-group-flush">
-                                <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center border-0">
-                                    Cinéma belge
-                                    <span class="badge bg-primary rounded-pill">12</span>
-                                </a>
-                                <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center border-0">
-                                    Festivals
-                                    <span class="badge bg-primary rounded-pill">8</span>
-                                </a>
-                                <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center border-0">
-                                    Streaming
-                                    <span class="badge bg-primary rounded-pill">15</span>
-                                </a>
-                            </div>
-                        </div>
-                    </section>
-                </aside>
+                    <div class="mb-3">
+                        <label class="col-19 col-md-5">Durée Max : <span id="dureeMaxValue">60</span> min</label>
+                        <input type="range" id="dureeMax" class="col-12 col-md-5" min="0" max="60" value="60" step="1">
+                    </div>
+                    <label class="col-19 col-md-5">Nombre max d'articles :</label>
+                    <input type="number" id="nombreArticles" class="col-12 col-md-5" min="1" max="20" value="10"></form>
+                </form>
+            </div>
+            <section class="card mb-4">
+                <div class="card-body">
+                    <h4 class="h5 mb-3">À propos</h4>
+                    <p class="mb-0">Découvrez les dernières actualités et articles sur le cinéma belge et ses lieux de tournage.</p>
+                </div>
             </section>
-        </main>
-
-        <footer class="bg-white shadow-sm mt-5">
-            <section class="container py-4">
-                <section class="row">
-                    <section class="col-md-4 mb-3">
-                        <h5 class="text-primary mb-3">À propos</h5>
-                        <p class="text-muted mb-0">Découvrez les dernières actualités du cinéma belge.</p>
-                    </section>
-                    <nav class="col-md-4 mb-3">
-                        <h5 class="text-primary mb-3">Liens rapides</h5>
-                        <ul class="list-unstyled mb-0">
-                            <li><a href="index.html" class="text-muted text-decoration-none">Accueil</a></li>
-                            <li><a href="article.html" class="text-muted text-decoration-none">Articles</a></li>
-                            <li><a href="custom.html" class="text-muted text-decoration-none">Personnalisation</a></li>
-                        </ul>
-                    </nav>
-                    <section class="col-md-4">
-                        <h5 class="text-primary mb-3">Contact</h5>
-                        <p class="text-muted mb-0">Email: contact@monsite.be<br>Tél: +32 2 123 45 67</p>
-                    </section>
-                </section>
-                <hr class="my-4">
-                <p class="text-center text-muted mb-0">&copy; 2024 Bilain Jaber. Tous droits réservés.</p>
+            <section class="card mb-4">
+                <div class="card-body">
+                    <h4 class="h5 mb-3">Catégories</h4>
+                    <div class="list-group list-group-flush">
+                        <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center border-0">
+                            Cinéma belge
+                            <span class="badge bg-primary rounded-pill">12</span>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center border-0">
+                            Festivals
+                            <span class="badge bg-primary rounded-pill">8</span>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center border-0">
+                            Streaming
+                            <span class="badge bg-primary rounded-pill">15</span>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center border-0">
+                            Documentaires
+                            <span class="badge bg-primary rounded-pill">6</span>
+                        </a>
+                    </div>
+                </div>
             </section>
-        </footer>
-    </div>
 
-    <!-- 
-    ============================================================
-    CHARGEMENT DE VUE.JS
-    ============================================================
-    On charge Vue 3 depuis le CDN
-    -->
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    
-    <!-- 
-    ============================================================
-    APPLICATION VUE.JS
-    ============================================================
-    -->
-    <script>
-        const { createApp } = Vue;
+            <section class="card mb-4">
+                <div class="card-body">
+                    <h4 class="h5 mb-3">Articles populaires</h4>
+                    <div class="list-group list-group-flush">
+                        <a href="#" class="list-group-item list-group-item-action border-0">
+                            <h6 class="mb-1">Les meilleurs films belges de 2024</h6>
+                            <p class="mb-1 small text-muted">Une sélection des films belges qui ont marqué l'année.</p>
+                            <small class="text-primary">3 jours</small>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action border-0">
+                            <h6 class="mb-1">Le cinéma belge à l'international</h6>
+                            <p class="mb-1 small text-muted">Comment le cinéma belge s'exporte à l'étranger.</p>
+                            <small class="text-primary">5 jours</small>
+                        </a>
+                    </div>
+                </div>
+            </section>
 
-        createApp({
-            // ==================== DATA ====================
-            // POURQUOI data() retourne un objet ?
-            // - Chaque instance Vue doit avoir ses propres données
-            // - Une fonction garantit que chaque composant a son propre état
-            data() {
-                return {
-                    // Thème
-                    couleurSelectionnee: '#000000',
-                    tailleSelectionnee: '16px',
-                    
-                    // Article principal visible/caché
-                    articleVisible: true,
-                    
-                    // Info au survol
-                    infoSurvol: '',
-                    
-                    // Filtres de recherche
-                    motCle: '',
-                    dureeMin: 0,
-                    dureeMax: 60,
-                    maxArticles: 10,
-                    
-                    // Nombre d'articles secondaires à afficher
-                    afficherArticle: 0,
-                    
-                    // ==================== DONNÉES DES ARTICLES ====================
-                    // POURQUOI créer un objet pour l'article principal ?
-                    // - En JS pur, vous utilisiez le DOM comme source de données
-                    // - En Vue, on sépare les données (Model) de l'affichage (View)
-                    // - Plus facile à maintenir et modifier
-                    articlePrincipal: {
-                        id: 0,
-                        titre: "Ces coins de Belgique dont le cinéma raffole",
-                        description: "De nombreux tournages se déroulent en Belgique. Petit tour des lieux les plus prisés par le septième art.",
-                        auteur: "Adrien Corbeel",
-                        date: "05/10/2025",
-                        temps: 50,
-                        categorie: "Cinéma belge",
-                        image: "https://playground.burotix.be/4IWPB/0_article_sample/39e98420b5e98bfbdc8a619bef7b8f61-1740665779.jpg"
-                    },
-                    
-                    // POURQUOI un tableau d'objets pour les articles ?
-                    // - Chaque article a ses propriétés (titre, temps, etc.)
-                    // - Plus facile à filtrer avec .filter()
-                    // - Plus facile à afficher avec v-for
-                    articlesSecondaires: [
-                        {
-                            id: 1,
-                            titre: "Le Festival de Cannes 2024 dévoile sa sélection",
-                            description: "Découvrez les films qui seront présentés lors de la prochaine édition du festival.",
-                            auteur: "Marie Laurent",
-                            date: "28/09/2025",
-                            temps: 25,
-                            categorie: "Festivals",
-                            badgeColor: "success",
-                            image: "https://www.parismatch.com/lmnr/r/960,640,FFFFFF,forcex,center-middle/img/var/pm/public/styles/paysage/public/media/image/2024/04/23/17/gettyimages-1491762173.jpg"
-                        },
-                        {
-                            id: 2,
-                            titre: "Les nouveautés Netflix de mars 2024",
-                            description: "Les films et séries qui arrivent sur la plateforme ce mois-ci.",
-                            auteur: "Sophie Martin",
-                            date: "03/10/2025",
-                            temps: 30,
-                            categorie: "Streaming",
-                            badgeColor: "danger",
-                            image: "https://sf2.cnetfrance.fr/wp-content/uploads/cnet/2024/11/netflix-catalogue-janvier-2025.jpg"
-                        },
-                        {
-                            id: 3,
-                            titre: "Le cinéma français en pleine renaissance",
-                            description: "Une nouvelle génération de réalisateurs redonne vie au cinéma français.",
-                            auteur: "Thomas Dubois",
-                            date: "02/10/2025",
-                            temps: 20,
-                            categorie: "Cinéma français",
-                            badgeColor: "info",
-                            image: "https://www.lalibre.be/resizer/v2/NGKO6YDATVFCNHMABYNKNVBNO4.jpg"
-                        },
-                        {
-                            id: 4,
-                            titre: "Les documentaires qui font le buzz",
-                            description: "Une sélection des meilleurs documentaires du moment.",
-                            auteur: "Julie Bernard",
-                            date: "01/10/2025",
-                            temps: 10,
-                            categorie: "Documentaire",
-                            badgeColor: "warning",
-                            image: "https://i0.wp.com/www.trendymood.com/wp-content/uploads/2017/05/Documentaires-Netflix.jpg"
-                        },
-                        {
-                            id: 5,
-                            titre: "Les coulisses du cinéma belge",
-                            description: "Découvrez les secrets de fabrication des plus grands films belges de l'année.",
-                            auteur: "Michel Lambert",
-                            date: "25/09/2025",
-                            temps: 38,
-                            categorie: "Production",
-                            badgeColor: "success",
-                            image: "https://m.media-amazon.com/images/I/71ffJtgh4oL.jpg"
-                        },
-                        {
-                            id: 6,
-                            titre: "Les acteurs belges à Hollywood",
-                            description: "Ces talents belges qui conquièrent le cinéma américain.",
-                            auteur: "Anne Dubois",
-                            date: "22/09/2025",
-                            temps: 23,
-                            categorie: "Acteurs",
-                            badgeColor: "primary",
-                            image: "https://i.ytimg.com/vi/uGclmzQx2VM/sddefault.jpg"
-                        }
-                    ]
-                };
-            },
+            <section class="card mb-4 info-art ">
+                <div class="card-body ">
+                    <h4 class="h5 mb-3">Article en vedette</h4>
+                    <img src="https://ecran-total.fr/wp-content/uploads/2024/03/Copyright-Cinema-Palace.jpg" class="card-img-top mb-3" alt="Box-office">
+                    <span class="badge bg-danger mb-2">Box-office</span>
+                    <h3 class="h5 titre-form">Le box-office belge en chiffres</h3>
+                    <p class="small card-text">Analyse des performances des films belges dans les salles cette année.</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">Par Pierre Leroy •  <br>15/09/2025 <br><p class="readtime"> Temps de lecture : 15 min </p></small>
+                        <a href="#" class="btn btn-outline-primary btn-sm">Lire</a>
+                    </div>
+                </div>
+            </section>
 
-            // ==================== COMPUTED PROPERTIES ====================
-            // POURQUOI computed au lieu de methods ?
-            // - Les computed sont CACHÉES : recalculées seulement si les dépendances changent
-            // - Plus performant que de recalculer à chaque fois
-            // - S'utilisent comme des propriétés (pas de () dans le template)
-            computed: {
-                // Filtre les articles selon TOUS les critères
-                articlesFiltres() {
-                    // POURQUOI .filter() ?
-                    // - Méthode JavaScript qui retourne un nouveau tableau
-                    // - Garde seulement les articles qui passent les tests
-                    return this.articlesSecondaires.filter(article => {
-                        // FILTRE 1 : Mot-clé dans le titre
-                        // POURQUOI !this.motCle || ... ?
-                        // - Si motCle est vide, on accepte tout (true)
-                        // - Sinon, on vérifie si le titre contient le mot
-                        const motsMatch = !this.motCle || 
-                            article.titre.toLowerCase().includes(this.motCle.toLowerCase());
-                        
-                        // FILTRE 2 : Durée de lecture
-                        const dureeMatch = article.temps >= this.dureeMin && 
-                                          article.temps <= this.dureeMax;
-                        
-                        // POURQUOI return motsMatch && dureeMatch ?
-                        // - L'article doit passer TOUS les filtres
-                        // - && = ET logique : les deux doivent être vrais
-                        return motsMatch && dureeMatch;
-                    });
-                },
+            <section class="card mb-4">
+                <div class="card-body">
+                    <h4 class="h5 mb-3">Newsletter</h4>
+                    <p>Restez informé de l'actualité du cinéma belge.</p>
+                    <form>
+                        <input type="email" class="form-control mb-3" placeholder="Votre email">
+                        <button type="submit" class="btn btn-primary w-100">S'inscrire</button>
+                    </form>
+                </div>
+            </section>
 
-                // Compte combien d'articles sont réellement visibles
-                articlesVisiblesCount() {
-                    // POURQUOI Math.min() ?
-                    // - On veut le minimum entre 3 valeurs :
-                    //   1. afficherArticle (combien on veut montrer)
-                    //   2. articlesFiltres.length (combien on a après filtrage)
-                    //   3. maxArticles (limite utilisateur)
-                    const visible = Math.min(
-                        this.afficherArticle,
-                        this.articlesFiltres.length,
-                        this.maxArticles
-                    );
-                    return visible;
-                }
-            },
+            <section class="card mb-4 info-art">
+                <div class="card-body">
+                    <h4 class="h5 mb-3">Dernières critiques</h4>
+                    <img src="https://fr.web.img6.acsta.net/pictures/22/10/26/16/00/5597821.jpg" class="card-img-top mb-3" alt="Critique de film">
+                    <span class="badge bg-info mb-2">Critique</span>
+                    <h3 class="h5 titre-form">Close : Un chef-d'œuvre belge</h3>
+                    <p class="small card-text">Une analyse approfondie du film qui a ému le monde entier.</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">Par Marc Dumont • <br>11/09/2025 <br><p class="readtime"> Temps de lecture : 10 min</p></small>
+                        <a href="#" class="btn btn-outline-primary btn-sm">Lire</a>
+                    </div>
+                </div>
+            </section>
 
-            // ==================== METHODS ====================
-            // Les méthodes sont des fonctions qu'on peut appeler depuis le template
-            methods: {
-                // ---------- THÈME ----------
-                changerCouleur() {
-                    // POURQUOI this.couleurSelectionnee ?
-                    // - 'this' fait référence à l'instance Vue
-                    // - couleurSelectionnee est dans data()
-                    document.documentElement.style.setProperty('--text-color', this.couleurSelectionnee);
-                    localStorage.setItem('text-color', this.couleurSelectionnee);
-                },
+            <section class="card mb-4 info-art">
+                <div class="card-body">
+                    <h4 class="h5 mb-3">Interview</h4>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6__bVGu55aiIMXZBjyt8n4sTl-bJDrOHegg&s" class="card-img-top mb-3" alt="Interview">
+                    <span class="badge bg-warning mb-2">Interview</span>
+                    <h3 class="h5 titre-form">Rencontre avec Joachim Lafosse</h3>
+                    <p class="small card-text">Le réalisateur belge nous parle de son prochain film.</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">Par Claire Dubois • <br>09/09/2025 <br><p class="readtime"> Temps de lecture : 5 min</p></small>
+                        <a href="#" class="btn btn-outline-primary btn-sm">Lire</a>
+                    </div>
+                </div>
+            </section>
+        </aside>
+    </section>
+</main>
 
-                changerTaille() {
-                    document.documentElement.style.fontSize = this.tailleSelectionnee;
-                    localStorage.setItem('fontSize', this.tailleSelectionnee);
-                },
 
-                // ---------- ARTICLE PRINCIPAL ----------
-                toggleArticle() {
-                    // POURQUOI juste inverser un booléen ?
-                    // - Plus simple que vérifier style.display !== "none"
-                    // - Vue gère automatiquement l'affichage avec v-show
-                    this.articleVisible = !this.articleVisible;
-                },
+<footer class="bg-white shadow-sm mt-5">
+    <section class="container py-4">
+        <section class="row">
+            <section class="col-md-4 mb-3">
+                <h5 class="text-primary mb-3">À propos</h5>
+                <p class="text-muted mb-0">Découvrez les dernières actualités du cinéma belge.</p>
+            </section>
+            <nav class="col-md-4 mb-3">
+                <h5 class="text-primary mb-3">Liens rapides</h5>
+                <ul class="list-unstyled mb-0">
+                    <li><a href="index.html" class="text-muted text-decoration-none">Accueil</a></li>
+                    <li><a href="article.html" class="text-muted text-decoration-none">Articles</a></li>
+                    <li><a href="custom.html" class="text-muted text-decoration-none">Personnalisation</a></li>
+                </ul>
+            </nav>
+            <section class="col-md-4">
+                <h5 class="text-primary mb-3">Contact</h5>
+                <p class="text-muted mb-0">Email: contact@monsite.be<br>Tél: +32 2 123 45 67</p>
+            </section>
+        </section>
+        <hr class="my-4">
+        <p class="text-center text-muted mb-0">&copy; 2024 Bilain Jaber. Tous droits réservés.</p>
+    </section>
+</footer>
 
-                // ---------- SURVOL ----------
-                afficherInfoArticle(article) {
-                    // POURQUOI passer 'article' en paramètre ?
-                    // - En JS pur, vous utilisiez event.currentTarget.querySelector()
-                    // - Ici, v-for nous donne directement l'objet article
-                    // - Plus propre : pas besoin de chercher dans le DOM
-                    this.infoSurvol = `Par ${article.auteur} • ${article.date} • Temps de lecture : ${article.temps} min`;
-                },
-
-                cacherInfo() {
-                    // Vide l'info au survol
-                    this.infoSurvol = '';
-                },
-
-                // ---------- NAVIGATION ARTICLES SECONDAIRES ----------
-                afficherPlus() {
-                    // POURQUOI += 2 ?
-                    // - Même logique que votre code original
-                    // - Mais on ne touche pas au DOM, juste à une variable
-                    // - Vue met à jour l'affichage automatiquement
-                    if (this.afficherArticle < this.articlesSecondaires.length) {
-                        this.afficherArticle += 2;
-                        // POURQUOI cette vérification ?
-                        // - Évite de dépasser le nombre total d'articles
-                        if (this.afficherArticle > this.articlesSecondaires.length) {
-                            this.afficherArticle = this.articlesSecondaires.length;
-                        }
-                    }
-                },
-
-                afficherMoins() {
-                    if (this.afficherArticle > 0) {
-                        this.afficherArticle -= 2;
-                        // Évite d'aller en négatif
-                        if (this.afficherArticle < 0) {
-                            this.afficherArticle = 0;
-                        }
-                    }
-                },
-
-                // ---------- CHARGEMENT DES PRÉFÉRENCES ----------
-                chargerPreferences() {
-                    // POURQUOI cette fonction ?
-                    // - Restaure les choix de l'utilisateur depuis localStorage
-                    // - Appelée au démarrage de l'app (voir mounted())
-                    const savedColor = localStorage.getItem('text-color');
-                    const savedFont = localStorage.getItem('fontSize');
-                    
-                    if (savedColor) {
-                        this.couleurSelectionnee = savedColor;
-                        document.documentElement.style.setProperty('--text-color', savedColor);
-                    }
-                    
-                    if (savedFont) {
-                        this.tailleSelectionnee = savedFont;
-                        document.documentElement.style.fontSize = savedFont;
-                    }
-                }
-            },
-
-            // ==================== LIFECYCLE HOOKS ====================
-            // POURQUOI mounted() ?
-            // - C'est un "hook" de cycle de vie Vue
-            // - Appelé automatiquement quand le composant est prêt
-            // - Équivalent de DOMContentLoaded en JS pur
-            // - Garantit que tout le HTML Vue est généré
-            mounted() {
-                // Charge les préférences sauvegardées
-                this.chargerPreferences();
-                
-                console.log('Application Vue montée et prête !');
-                console.log('Nombre d\'articles secondaires:', this.articlesSecondaires.length);
-            }
-        }).mount('#app');
-        
-        // POURQUOI .mount('#app') ?
-        // - Indique à Vue où "accrocher" l'application
-        // - Vue va prendre le contrôle de <div id="app">
-        // - Tout ce qui est dans #app devient réactif
-    </script>
-
-    <!-- Bootstrap JS (pour le menu responsive) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
