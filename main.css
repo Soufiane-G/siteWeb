@@ -19,6 +19,9 @@
     --box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
+/*.article-secondaire{
+    display: none;
+} */
 
 .main-header {
     background-color: var(--template-color);
@@ -101,8 +104,14 @@ body {
 
 .badge {
     padding: 0.5em 1em;
-    font-weight: 500;
+    font-weight: 1000;
     font-size: 0.6rem !important;
+    border: 2px solid #0d6efd;      /* Contour bleu */
+    background-color: #cfe2ff;      /* Bleu clair à l'intérieur */
+    color: #0d6efd;                 /* Texte bleu */
+    border-radius: 0.4rem;          /* Coins arrondis (optionnel) */
+
+
 }
 
 .btn-primary {
@@ -274,4 +283,29 @@ footer a:hover {
     .card { margin-bottom: 15px; }
     input[type="range"] { margin: 5px 0; }
     input[type="range"]::-webkit-slider-thumb { width: 14px; height: 14px; }
-} 
+}
+
+
+#position{
+    position:fixed;
+    right:20px;
+    top:100px; /*permet d'être juste sous la bannière */
+    width:250px;
+    border:1px solid gray;
+    padding:10px;
+    background: #fff;  /* utile au-dessus d’images/vidéos */
+    z-index: 1050;
+}
+
+#masquer-article {
+
+    margin: 10px;
+
+}
+
+.art-visible {
+    position: absolute;
+    margin-top: 80px;
+    margin-left: 140px;
+
+}
